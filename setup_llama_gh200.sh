@@ -41,11 +41,11 @@ declare -A MODEL_PATTERN=(
 
 declare -A MODEL_LOCALDIR=(
     [llama70b]="$HOME/models/llama-70b-abliterated-q8"
-    [gemma-e4b-q4]="$HOME/ablit/ablit_models/01_gemma4_e4b_heretic_q4_k_m"
-    [gemma-26b-q4]="$HOME/ablit/ablit_models/02_gemma4_26b_a4b_heretic_q4_k_m"
-    [gemma-31b-q4]="$HOME/ablit/ablit_models/03_gemma4_31b_heretic_q4_k_m"
-    [gemma-31b-q6]="$HOME/ablit/ablit_models/04_gemma4_31b_heretic_q6_k"
-    [gemma-31b-q8]="$HOME/ablit/ablit_models/05_gemma4_31b_heretic_q8_0"
+    [gemma-e4b-q4]="$HOME/models/gemma-e4b-heretic-q4"
+    [gemma-26b-q4]="$HOME/models/gemma-26b-heretic-q4"
+    [gemma-31b-q4]="$HOME/models/gemma-31b-heretic-q4"
+    [gemma-31b-q6]="$HOME/models/gemma-31b-heretic-q6"
+    [gemma-31b-q8]="$HOME/models/gemma-31b-heretic-q8"
 )
 
 declare -A MODEL_SIZE=(
