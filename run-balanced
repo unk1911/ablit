@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LLAMA_BIN="$HOME/ablit/llama.cpp/build-cuda/bin/llama-cli"
+MODEL="$HOME/ablit/ablit_models/02_gemma4_26b_a4b_heretic_q4_k_m/coder3101_gemma_4_26b_a4b_it_heretic-Q4_K_M.gguf"
+
+if [[ ! -x "$LLAMA_BIN" ]]; then
+  echo "Missing llama-cli at: $LLAMA_BIN"
+  exit 1
+fi
+
+if [[ ! -f "$MODEL" ]]; then
+  echo "Missing model file: $MODEL"
+  exit 1
+fi
+
+exec "$LLAMA_BIN" \
+  -m "$MODEL" \
+  -ngl auto \
+  -c 2048 \
+  -n 256 \
+  -st \
+  --simple-io \
+  --reasoning off \
+  "$@"

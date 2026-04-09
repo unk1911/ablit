@@ -1,0 +1,26 @@
+# Python virtualenv
+.venv/
+
+# Model files (large binary files)
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# llama.cpp (separate upstream repo)
+llama.cpp/
+
+# Generated output files
+out/*.pdf
+
+# Pandoc binaries (download separately)
+tools/pandoc/
+
+# Claude local settings
+.claude/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
