@@ -156,7 +156,22 @@ if [[ ${#DOWNLOAD_MODELS[@]} -eq 0 ]]; then
     exit 0
 fi
 
-pip install -q huggingface-hub
+# Pick a Python with huggingface_hub available.
+# Priority: project venv > any python3 that already has it > create a fresh venv.
+VENV_DIR="$HOME/ablit/.venv"
+PY=""
+if [ -x "$VENV_DIR/bin/python3" ] && "$VENV_DIR/bin/python3" -c "import huggingface_hub" 2>/dev/null; then
+    PY="$VENV_DIR/bin/python3"
+    echo "==> Using project venv: $PY"
+elif command -v python3 >/dev/null && python3 -c "import huggingface_hub" 2>/dev/null; then
+    PY="python3"
+    echo "==> Using system python3 (huggingface_hub already installed)"
+else
+    echo "==> Creating venv at $VENV_DIR and installing huggingface_hub..."
+    python3 -m venv "$VENV_DIR"
+    "$VENV_DIR/bin/pip" install -q --upgrade pip huggingface_hub
+    PY="$VENV_DIR/bin/python3"
+fi
 
 for key in "${DOWNLOAD_MODELS[@]}"; do
     repo="${MODEL_REPO[$key]}"
@@ -170,7 +185,7 @@ for key in "${DOWNLOAD_MODELS[@]}"; do
     fi
 
     echo "==> [$key] Downloading $repo ($size) ..."
-    python3 - <<PYEOF
+    "$PY" - <<PYEOF
 from huggingface_hub import snapshot_download
 snapshot_download(
     "$repo",
