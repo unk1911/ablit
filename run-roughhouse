@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LLAMA_BIN="$HOME/ablit/llama.cpp/build-cuda/bin/llama-cli"
+MODEL="$HOME/models/qwen40b-roughhouse-iq4xs/Qwen3.5-40B-RoughHouse-Claude-4.6-Opus-Polar-Deckard-Uncensored-Heretic-Thinking.IQ4_XS.gguf"
+
+if [[ ! -x "$LLAMA_BIN" ]]; then
+  echo "Missing llama-cli at: $LLAMA_BIN"
+  exit 1
+fi
+
+if [[ ! -f "$MODEL" ]]; then
+  echo "Missing model file: $MODEL"
+  echo "Download with: ./setup.sh --model qwen40b-roughhouse-iq4xs"
+  exit 1
+fi
+
+exec "$LLAMA_BIN" \
+  -m "$MODEL" \
+  -ngl 99 \
+  -c 4096 \
+  -n 1024 \
+  -st \
+  --simple-io \
+  --temp 0.7 \
+  --repeat-penalty 1.05 \
+  -sys "Be vivid and precise." \
+  "$@"
