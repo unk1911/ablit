@@ -9,9 +9,7 @@
 
 set -euo pipefail
 
-MODEL_DIR="$HOME/models/llama-70b-abliterated-q8"
 LLAMA_DIR="$HOME/llama.cpp"
-SHARD1="$MODEL_DIR/Llama-3.3-70B-Instruct-abliterated-Q8_0/Llama-3.3-70B-Instruct-abliterated-Q8_0-00001-of-00002.gguf"
 
 # ── Available abliterated models ─────────────────────────────────────────────
 # Key       HF repo                                  pattern                                        local dir
@@ -45,14 +43,15 @@ declare -A MODEL_PATTERN=(
     [qwen40b-roughhouse-iq4xs]="*.IQ4_XS.gguf"
 )
 
+ABLIT_MODELS="$HOME/ablit/ablit_models"
 declare -A MODEL_LOCALDIR=(
-    [llama70b]="$HOME/models/llama-70b-abliterated-q8"
-    [gemma-e4b-q4]="$HOME/models/gemma-e4b-heretic-q4"
-    [gemma-26b-q4]="$HOME/models/gemma-26b-heretic-q4"
-    [gemma-31b-q4]="$HOME/models/gemma-31b-heretic-q4"
-    [gemma-31b-q6]="$HOME/models/gemma-31b-heretic-q6"
-    [gemma-31b-q8]="$HOME/models/gemma-31b-heretic-q8"
-    [qwen40b-roughhouse-iq4xs]="$HOME/models/qwen40b-roughhouse-iq4xs"
+    [llama70b]="$ABLIT_MODELS/07_llama70b_abliterated_q8"
+    [gemma-e4b-q4]="$ABLIT_MODELS/01_gemma4_e4b_heretic_q4_k_m"
+    [gemma-26b-q4]="$ABLIT_MODELS/02_gemma4_26b_a4b_heretic_q4_k_m"
+    [gemma-31b-q4]="$ABLIT_MODELS/03_gemma4_31b_heretic_q4_k_m"
+    [gemma-31b-q6]="$ABLIT_MODELS/04_gemma4_31b_heretic_q6_k"
+    [gemma-31b-q8]="$ABLIT_MODELS/05_gemma4_31b_heretic_q8_0"
+    [qwen40b-roughhouse-iq4xs]="$ABLIT_MODELS/06_qwen40b_roughhouse_iq4xs"
 )
 
 declare -A MODEL_SIZE=(
@@ -203,13 +202,13 @@ cat <<'USAGE'
 
 Interactive chat (Llama 70B on GH200):
   ~/llama.cpp/build/bin/llama-cli \
-    -m ~/models/llama-70b-abliterated-q8/Llama-3.3-70B-Instruct-abliterated-Q8_0/Llama-3.3-70B-Instruct-abliterated-Q8_0-00001-of-00002.gguf \
+    -m ~/ablit/ablit_models/07_llama70b_abliterated_q8/Llama-3.3-70B-Instruct-abliterated-Q8_0-00001-of-00002.gguf \
     -ngl 99 -c 8192 -cnv \
     --temp 0.7 --repeat-penalty 1.1
 
 OpenAI-compatible API server (port 8080):
   ~/llama.cpp/build/bin/llama-server \
-    -m ~/models/llama-70b-abliterated-q8/Llama-3.3-70B-Instruct-abliterated-Q8_0/Llama-3.3-70B-Instruct-abliterated-Q8_0-00001-of-00002.gguf \
+    -m ~/ablit/ablit_models/07_llama70b_abliterated_q8/Llama-3.3-70B-Instruct-abliterated-Q8_0-00001-of-00002.gguf \
     -ngl 99 -c 8192 --host 0.0.0.0 --port 8080
 
 IMPORTANT:

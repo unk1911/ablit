@@ -2,7 +2,7 @@
 set -euo pipefail
 
 LLAMA_BIN="$HOME/ablit/llama.cpp/build-cuda/bin/llama-cli"
-MODEL="$HOME/models/qwen40b-roughhouse-iq4xs/Qwen3.5-40B-RoughHouse-Claude-4.6-Opus-Polar-Deckard-Uncensored-Heretic-Thinking.IQ4_XS.gguf"
+MODEL="$HOME/ablit/ablit_models/06_qwen40b_roughhouse_iq4xs/Qwen3.5-40B-RoughHouse-Claude-4.6-Opus-Polar-Deckard-Uncensored-Heretic-Thinking.IQ4_XS.gguf"
 
 if [[ ! -x "$LLAMA_BIN" ]]; then
   echo "Missing llama-cli at: $LLAMA_BIN"
