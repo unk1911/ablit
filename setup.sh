@@ -21,6 +21,7 @@ MODELS_KEYS=(
     "gemma-31b-q6"
     "gemma-31b-q8"
     "qwen40b-roughhouse-iq4xs"
+    "qwen40b-deckard-iq4xs"
 )
 
 declare -A MODEL_REPO=(
@@ -31,6 +32,7 @@ declare -A MODEL_REPO=(
     [gemma-31b-q6]="Stabhappy/gemma-4-31B-it-heretic-Gguf"
     [gemma-31b-q8]="Stabhappy/gemma-4-31B-it-heretic-Gguf"
     [qwen40b-roughhouse-iq4xs]="mradermacher/Qwen3.5-40B-RoughHouse-Claude-4.6-Opus-Polar-Deckard-Uncensored-Heretic-Thinking-GGUF"
+    [qwen40b-deckard-iq4xs]="mradermacher/Qwen3.5-40B-Claude-4.6-Opus-Deckard-Heretic-Uncensored-Thinking-i1-GGUF"
 )
 
 declare -A MODEL_PATTERN=(
@@ -41,6 +43,7 @@ declare -A MODEL_PATTERN=(
     [gemma-31b-q6]="*Q6_K*"
     [gemma-31b-q8]="*Q8_0*"
     [qwen40b-roughhouse-iq4xs]="*.IQ4_XS.gguf"
+    [qwen40b-deckard-iq4xs]="*.i1-IQ4_XS.gguf"
 )
 
 ABLIT_MODELS="$HOME/ablit/ablit_models"
@@ -52,6 +55,7 @@ declare -A MODEL_LOCALDIR=(
     [gemma-31b-q6]="$ABLIT_MODELS/04_gemma4_31b_heretic_q6_k"
     [gemma-31b-q8]="$ABLIT_MODELS/05_gemma4_31b_heretic_q8_0"
     [qwen40b-roughhouse-iq4xs]="$ABLIT_MODELS/06_qwen40b_roughhouse_iq4xs"
+    [qwen40b-deckard-iq4xs]="$ABLIT_MODELS/08_qwen40b_deckard_iq4xs"
 )
 
 declare -A MODEL_SIZE=(
@@ -62,6 +66,7 @@ declare -A MODEL_SIZE=(
     [gemma-31b-q6]="~25GB"
     [gemma-31b-q8]="~32GB"
     [qwen40b-roughhouse-iq4xs]="~22GB (fits 4090 24GB)"
+    [qwen40b-deckard-iq4xs]="~22GB (fits 4090 24GB)"
 )
 
 # ── Usage ─────────────────────────────────────────────────────────────────────
@@ -85,13 +90,16 @@ MODEL KEYS:
   gemma-31b-q8  Gemma 4 31B Heretic Q8_0                    ${MODEL_SIZE[gemma-31b-q8]}
   qwen40b-roughhouse-iq4xs
                 Qwen3.5 40B RoughHouse Uncensored Thinking  ${MODEL_SIZE[qwen40b-roughhouse-iq4xs]}
+  qwen40b-deckard-iq4xs
+                Qwen3.5 40B Deckard Claude-4.6-Opus Thinking ${MODEL_SIZE[qwen40b-deckard-iq4xs]}
 
 EXAMPLES:
   $0                              # Build llama.cpp only
   $0 --model llama70b             # Build + download Llama 70B
-  $0 --model gemma-31b-q8        # Build + download Gemma 31B Q8
+  $0 --model gemma-31b-q8         # Build + download Gemma 31B Q8
+  $0 --model qwen40b-deckard-iq4xs   # Deckard 40B IQ4_XS (fits RTX 4090)
   $0 --model gemma-e4b-q4 --model gemma-26b-q4   # Multiple models
-  $0 --all-models                 # Everything (~168GB total)
+  $0 --all-models                 # Everything (~212GB total)
 EOF
     exit 0
 }

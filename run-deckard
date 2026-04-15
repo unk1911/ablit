@@ -2,7 +2,7 @@
 set -euo pipefail
 
 LLAMA_BIN="$HOME/ablit/llama.cpp/build-cuda/bin/llama-cli"
-MODEL="$HOME/ablit/ablit_models/06_qwen40b_roughhouse_iq4xs/Qwen3.5-40B-RoughHouse-Claude-4.6-Opus-Polar-Deckard-Uncensored-Heretic-Thinking.IQ4_XS.gguf"
+MODEL="$HOME/ablit/ablit_models/08_qwen40b_deckard_iq4xs/Qwen3.5-40B-Claude-4.6-Opus-Deckard-Heretic-Uncensored-Thinking.i1-IQ4_XS.gguf"
 
 if [[ ! -x "$LLAMA_BIN" ]]; then
   echo "Missing llama-cli at: $LLAMA_BIN"
@@ -11,7 +11,7 @@ fi
 
 if [[ ! -f "$MODEL" ]]; then
   echo "Missing model file: $MODEL"
-  echo "Download with: ./setup.sh --model qwen40b-roughhouse-iq4xs"
+  echo "Download with: ./setup.sh --model qwen40b-deckard-iq4xs"
   exit 1
 fi
 
