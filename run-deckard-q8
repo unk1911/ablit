@@ -22,7 +22,7 @@ fi
 exec "$LLAMA_BIN" \
   -m "$MODEL" \
   -ngl 99 \
-  -fa \
+  -fa on \
   -c 32768 \
   -n 4096 \
   --simple-io \
