@@ -14,12 +14,13 @@ if [[ ! -f "$MODEL" ]]; then
   exit 1
 fi
 
-exec "$LLAMA_BIN" \
+"$LLAMA_BIN" \
   -m "$MODEL" \
   -ngl auto \
   -c 2048 \
   -n 256 \
   -st \
   --simple-io \
+  --log-disable \
   --reasoning off \
-  "$@"
+  "$@" 2>&1 | tee full.log
