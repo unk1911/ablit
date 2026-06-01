@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Qwen3-235B-A22B-Instruct-2507 Q4_K_M on 2x H100 SXM5.
+# Vanilla Qwen3 instruct (NOT abliterated) — 256K native context after the 2507 long-context update.
+# Cooperates fully on therapy/addiction analysis content without refusal.
+# Q4 KV cache required to fit ~145GB weights + 220K context in 160GB VRAM.
+set -euo pipefail
+
+LLAMA_BIN="$HOME/ablit/llama.cpp/build-cuda/bin/llama-cli"
+MODEL="$HOME/ablit/ablit_models/11_qwen3_235b_2507_q4km/Q4_K_M/Qwen3-235B-A22B-Instruct-2507-Q4_K_M-00001-of-00003.gguf"
+
+if [[ ! -x "$LLAMA_BIN" ]]; then
+  echo "Missing llama-cli at: $LLAMA_BIN"
+  exit 1
+fi
+
+if [[ ! -f "$MODEL" ]]; then
+  echo "Missing model file: $MODEL"
+  echo "Download with: huggingface-cli download unsloth/Qwen3-235B-A22B-Instruct-2507-GGUF --include 'Q4_K_M/*.gguf' --local-dir ~/models/qwen3-235b-2507-q4km"
+  exit 1
+fi
+
+ARGS=(
+  -m "$MODEL"
+  -ngl 99
+  -c 230000
+  -n 8192
+  -fa on
+  -ctk q4_0
+  -ctv q4_0
+  --tensor-split 1,1
+  --simple-io
+  --temp 0.7
+  --top-p 0.8
+  --top-k 20
+  --repeat-penalty 1.05
+)
+
+ONESHOT=0
+for arg in "$@"; do
+  case "$arg" in
+    -p|-f|--prompt|--file|--prompt=*|--file=*) ONESHOT=1; break ;;
+  esac
+done
+
+if (( ONESHOT )); then
+  "$LLAMA_BIN" "${ARGS[@]}" -st --log-disable "$@" 2>&1 | tee full.log
+else
+  exec "$LLAMA_BIN" "${ARGS[@]}" "$@"
+fi
