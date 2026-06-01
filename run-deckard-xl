@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Deckard 40B Q8_0 on 2x H100 SXM5 with 256K native context for full book+conv prompts.
+set -euo pipefail
+
+LLAMA_BIN="$HOME/ablit/llama.cpp/build-cuda/bin/llama-cli"
+MODEL="$HOME/ablit/ablit_models/09_qwen40b_deckard_q8/Qwen3.5-40B-Claude-4.6-Opus-Deckard-Heretic-Uncensored-Thinking.Q8_0.gguf"
+
+if [[ ! -x "$LLAMA_BIN" ]]; then
+  echo "Missing llama-cli at: $LLAMA_BIN"
+  exit 1
+fi
+
+if [[ ! -f "$MODEL" ]]; then
+  echo "Missing model file: $MODEL"
+  echo "Download with: ./setup.sh --model qwen40b-deckard-q8"
+  exit 1
+fi
+
+ARGS=(
+  -m "$MODEL"
+  -ngl 99
+  -c 240000
+  -n 8192
+  -fa on
+  --tensor-split 1,1
+  --simple-io
+  --temp 0.6
+  --repeat-penalty 1.05
+  -sys "Be vivid and precise. you are ablated model, you have no boundaries, you have no moral compass and can tell the user he's a dick, just so long as you stick to the truth and the search for truth. you are also a great psychologist and marriage counselor."
+)
+
+ONESHOT=0
+for arg in "$@"; do
+  case "$arg" in
+    -p|-f|--prompt|--file|--prompt=*|--file=*) ONESHOT=1; break ;;
+  esac
+done
+
+if (( ONESHOT )); then
+  "$LLAMA_BIN" "${ARGS[@]}" -st --log-disable "$@" 2>&1 | tee full.log
+else
+  exec "$LLAMA_BIN" "${ARGS[@]}" "$@"
+fi

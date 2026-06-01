@@ -14,6 +14,12 @@ llama.cpp/
 # Generated output files
 out/*.pdf
 
+# Run output logs (may contain sensitive prompt content)
+full.log
+*.log
+*_session_result.txt
+*_response_*.txt
+
 # Pandoc binaries (download separately)
 tools/pandoc/
 
